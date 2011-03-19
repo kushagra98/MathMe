@@ -9,6 +9,7 @@
     <signal name="delete_event" handler="numbers_term"/>
     <child>
       <object class="GtkHBox" id="hbox1">
+        <signal name="unrealize" handler="numbers_actEnd"/>
         <child>
           <object class="GtkVBox" id="menuView">
             <property name="visible">True</property>
@@ -37,7 +38,6 @@
             <child>
               <object class="GtkHButtonBox" id="hbuttonbox1">
                 <property name="visible">True</property>
-                <property name="spacing">2</property>
                 <property name="homogeneous">True</property>
                 <property name="layout_style">center</property>
                 <child>
@@ -45,7 +45,7 @@
                     <property name="label" translatable="yes">_Easy</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
+                    <property name="receives_default">False</property>
                     <property name="use_underline">True</property>
                     <signal name="clicked" handler="numbers_chDiff" object="easy"/>
                   </object>
@@ -60,7 +60,7 @@
                     <property name="label" translatable="yes">_Medium</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
+                    <property name="receives_default">False</property>
                     <property name="use_underline">True</property>
                     <signal name="clicked" handler="numbers_chDiff" object="medium"/>
                   </object>
@@ -75,7 +75,7 @@
                     <property name="label" translatable="yes">_Hard</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
+                    <property name="receives_default">False</property>
                     <property name="use_underline">True</property>
                     <signal name="clicked" handler="numbers_chDiff" object="hard"/>
                   </object>
@@ -83,6 +83,22 @@
                     <property name="expand">False</property>
                     <property name="fill">False</property>
                     <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="btnScore">
+                    <property name="label" translatable="yes">_Score</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="relief">half</property>
+                    <property name="use_underline">True</property>
+                    <signal name="clicked" handler="showScore" object="menuView"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">3</property>
                   </packing>
                 </child>
               </object>
@@ -198,7 +214,6 @@
                 <child>
                   <object class="GtkEntry" id="txtRes">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
                     <property name="max_length">3</property>
                     <property name="invisible_char">•</property>
                     <property name="activates_default">True</property>
@@ -294,6 +309,101 @@
           </object>
           <packing>
             <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkVBox" id="scoreView">
+            <property name="no_show_all">True</property>
+            <child>
+              <object class="GtkVBox" id="scoreMain">
+                <property name="visible">True</property>
+                <child>
+                  <object class="GtkLabel" id="lbScore">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Score</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkTreeView" id="scoreList">
+                    <property name="visible">True</property>
+                    <property name="rules_hint">True</property>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="btnScMainOk">
+                    <property name="label" translatable="yes">_Ok</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="can_default">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="border_width">9</property>
+                    <property name="use_underline">True</property>
+                    <signal name="clicked" handler="numbers_setScore"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkVBox" id="nameView">
+                <property name="visible">True</property>
+                <child>
+                  <object class="GtkLabel" id="lbPlayer">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Write your name</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="txtPlayer">
+                    <property name="visible">True</property>
+                    <property name="invisible_char">•</property>
+                  </object>
+                  <packing>
+                    <property name="fill">False</property>
+                    <property name="padding">5</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="btnScoreOk">
+                    <property name="label" translatable="yes">_Ok</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="border_width">9</property>
+                    <property name="use_underline">True</property>
+                    <signal name="clicked" handler="numbers_savePlayer"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>

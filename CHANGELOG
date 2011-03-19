@@ -1,2 +1,6 @@
-19032011
-* Initial commit
+19.03.2011
+ *Initial commit
+
+19.03.2011
+ ·Added score counting
+ ·Score saved in sqlite database

@@ -19,16 +19,21 @@
 import gtk
 from gobject import timeout_add
 import pango
-import sqlite
+import sqlite3
 from random import randint, randrange
 from gettext import gettext as _
+from os import path
 
 class Numbers:
     timeout  = 0
     hasOp    = True
     oldSign  = 0
     lifes    = 2
-    animControl = 1
+    difScore = 0
+    difText  = ''
+    score    = 0
+    rounds   = 0
+    player   = ''
     
     def __init__(self, runAsLib = True):
         self.builder = gtk.Builder() 
@@ -40,6 +45,12 @@ class Numbers:
         self.btnEasy = self.builder.get_object('btnEasy')
         self.btnHard = self.builder.get_object('btnHard')
         self.btnMed  = self.builder.get_object('btnMed')
+        self.scoreView = self.builder.get_object('scoreView')
+        self.scoreMain = self.builder.get_object('scoreMain')
+        self.lbScore = self.builder.get_object('lbScore')
+        self.scoreList = self.builder.get_object('scoreList')
+        self.nameView = self.builder.get_object('nameView')
+        self.txtPlayer = self.builder.get_object('txtPlayer')
         self.gameView = self.builder.get_object('gameView')
         self.lbNum1 = self.builder.get_object('lbNum1')
         self.lbNum2 = self.builder.get_object('lbNum2')
@@ -52,6 +63,8 @@ class Numbers:
         self.btnCalc = self.builder.get_object('btnCalc')
         self.btnNext = self.builder.get_object('btnNext')
         self.lifeBox = self.builder.get_object('lifeBox')
+        self.modelScore = listView(self.scoreList)
+        
                 
         self.widget = self.window.get_child()
         
@@ -74,6 +87,16 @@ class Numbers:
         
         if not runAsLib:
             self.window.show_all()
+			
+        dbPath ='%s/.MathMe.db' % path.expanduser('~')
+        dbExists = False
+        if path.isfile(dbPath):
+            dbExists = True
+        self.dataCon = sqlite3.connect(dbPath)
+        self.dataCursor = self.dataCon.cursor()
+        initDb = 'create table mathMe (player text, score int, rounds int, difficulty text);'
+        if not dbExists:
+            self.dataCursor.execute(initDb)
         
     def numbers_term(self, widget, data = 0):
         gtk.main_quit()
@@ -89,17 +112,24 @@ class Numbers:
             
             if sign == '+':
                 res = num1 + num2
+                pointFactor = 1 + self.difScore
             elif sign == '-':
                 res = num1 - num2
+                pointFactor = 1 + self.difScore
             elif sign == '×':
                 res = num1 * num2
+                pointFactor = 2 + self.difScore
             elif sign == '÷':
                 res = num1 / num2
+                pointFactor = 2 + self.difScore
             
             if(txRes == res):
                 self.sendMsg(True)
+                self.score  += pointFactor
             else:
                 self.sendMsg(False, res)
+                
+            self.rounds += 1
             self.btnNext.grab_focus()
     
     def numbers_oper(self, widget = gtk.Widget):
@@ -111,8 +141,7 @@ class Numbers:
         sign = ''
         
         if self.lifes < 0 and self.hasOp:
-            self.initLifes()
-            
+            self.showScore(self.gameView, True)
         
         while newSign == self.oldSign:
             newSign = randrange(1,4)
@@ -155,14 +184,51 @@ class Numbers:
         actionN = action.get_name()
         if actionN == 'easy':            
             self.timeout  = 100
+            self.difScore = 1
+            self.difText  = _('Easy')   
         elif actionN == 'medium':
             self.timeout  = 50
+            self.difScore = 2
+            self.difText  = _('Medium')
         elif actionN == 'hard':
             self.timeout  = 25
+            self.difScore = 3
+            self.difText  = _('Hard')
             
         self.gameView.show()
         self.menuView.hide()
         self.numbers_oper()
+        
+    def numbers_savePlayer(self, widget):
+        self.scoreMain.show()
+        self.player = self.txtPlayer.get_text()
+        #Saving Data
+        self.dataCursor.execute('INSERT INTO mathMe (player, score, rounds, difficulty) VALUES (?, ?, ?, ?)',(self.player, self.score, self.rounds, self.difText))
+        self.dataCon.commit()
+        #Filling listView
+        self.fillScore()
+                    
+        self.nameView.hide()
+    
+    def numbers_setScore(self, widget):
+        self.initLifes()
+        
+    def showScore(self, widget, internal = False):
+        widget.hide()
+        self.scoreView.show()
+        if internal:
+            self.scoreMain.hide()
+            self.nameView.show()
+        else:
+            self.fillScore()
+            self.scoreMain.show()
+            self.nameView.hide()
+        self.txtPlayer.grab_focus()
+                
+    def numbers_actEnd(self, widget):
+        self.dataCon.commit()
+        self.dataCursor.close()
+        self.dataCon.close()
             
     def markMe(self, widget,data = 0):
         widgetLabel = widget.get_child() #153, 38, 244 RGB
@@ -205,16 +271,22 @@ class Numbers:
         while i < 3:
             self.lbLife[i].set_label('☺')
             i += 1
+            
         self.gameView.hide()
+        self.scoreView.hide()
         self.menuView.show()
-        self.pBar.set_fraction(1)
+        self.pBar.set_fraction(0)
         self.btnEasy.grab_focus()
-        self.lifes = 3
+        self.lifes  = 3
+        self.score = 0
+        self.rounds = 0
+        
 
     def forceLocales(self):
         #This nasty function is needed due to lack of doc of how-to localize a GtkBuilder activity
         lbTitle = self.builder.get_object('lbTitle')
         lbSubt  = self.builder.get_object('lbSubt')
+        btnEasy = self.builder.get_object('btnEasy')
         btnEasy = self.builder.get_object('btnEasy')
         btnHard = self.builder.get_object('btnHard')
         btnMed  = self.builder.get_object('btnMed')
@@ -243,7 +315,41 @@ class Numbers:
         b = (b * 65535)/255
         
         return (r,g,b)
-            
+        
+    def fillScore(self):
+        self.dataCursor.execute('SELECT * FROM mathMe')
+        self.modelScore.clear()
+        for row in self.dataCursor:
+            self.modelScore.append(row)
+    
+class listView:
+    def __init__(self, widget):
+        self.listStore = gtk.ListStore(str, str, str, str)
+        self.treeView = widget
+        self.treeView.set_model(self.listStore)
+        self.columns = [gtk.TreeViewColumn(_('Player Name')),gtk.TreeViewColumn(_('Score')), gtk.TreeViewColumn(_('Rounds')), gtk.TreeViewColumn(_('Difficutly'))]
+        self.cell = gtk.CellRendererText()
+        self.treeView.set_reorderable(True)
+        self.treeView.set_rules_hint(True)
+        i = 0
+        while i < 4:
+            self.columns[i].set_resizable(True)
+            self.treeView.append_column(self.columns[i])
+            self.columns[i].pack_start(self.cell, False)
+            i += 1
+
+    def clear(self):
+        self.listStore.clear()
+
+    def append(self, data):
+        self.listStore.append(data)
+
+        i = 0
+        while i < 4:
+            self.columns[i].set_attributes(self.cell, text=i)
+            i += 1
+
+        
 if __name__ == '__main__':
         Numbers(False)
         gtk.main()
