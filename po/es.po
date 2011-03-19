@@ -1,0 +1,62 @@
+# MathMe Activity for Sugar
+# Copyright (C) 2011, Hiram Jeronimo Perez <worg@linuxmail.org>.
+# This file is distributed under the same license as the MathMe Activity package.
+# Hiram Jeronimo Perez <worg@linuxmail.org> 2011
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.1\n"
+"Report-Msgid-Bugs-To: worg@linuxmail.org\n"
+"POT-Creation-Date: 2011-03-14 05:22-0600\n"
+"PO-Revision-Date: 2011-03-14 05:30-0600\n"
+"Last-Translator: Hiram Jeronimo Perez <worg@linuxmail.org>\n"
+"Language-Team: Spanish\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../num.ui.h:1
+msgid "Choose difficulty"
+msgstr "Elije la dificultad"
+
+#: ../num.ui.h:2
+msgid "New Game"
+msgstr "Nuevo Juego"
+
+#: ../num.ui.h:3
+msgid "_Calculate"
+msgstr "_Calcular"
+
+#: ../num.ui.h:4
+msgid "_Easy"
+msgstr "_Fácil"
+
+#: ../num.ui.h:5
+msgid "_Hard"
+msgstr "_Difícil"
+
+#: ../num.ui.h:6
+msgid "_Medium"
+msgstr "_Medio"
+
+#: ../num.ui.h:7
+msgid "_Next"
+msgstr "_Siguiente"
+
+#: ../mathme.py:191
+msgid "Type the result, then press calculate"
+msgstr "Escribe el resultado y presiona calcular"
+
+#: ../mathme.py:222
+msgid "Great!"
+msgstr "¡Muy Bien!"
+
+#: ../mathme.py:226 ../mathme.py:228
+msgid "The result is:"
+msgstr "El resultado es:"
+
+#: ../mathme.py:226
+msgid "Game Over"
+msgstr "Fin del juego"
