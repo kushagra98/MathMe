@@ -338,7 +338,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="btnScMainOk">
-                    <property name="label" translatable="yes">_Ok</property>
+                    <property name="label" translatable="yes">Ok</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="can_default">True</property>
@@ -363,7 +363,7 @@
                 <child>
                   <object class="GtkLabel" id="lbPlayer">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">Write your name</property>
+                    <property name="label" translatable="yes">Write Your Name</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>

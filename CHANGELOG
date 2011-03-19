@@ -4,3 +4,8 @@
 19.03.2011
  ·Added score counting
  ·Score saved in sqlite database
+ ·Fixed error when typing letters instead of numbers
+ ·Increased size of Entry
+ ·genlocales.sh now divided in functions and accepting arguments
+  for each action
+  

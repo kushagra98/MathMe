@@ -65,6 +65,13 @@ class Numbers:
         self.lifeBox = self.builder.get_object('lifeBox')
         self.modelScore = listView(self.scoreList)
         
+        gtk.rc_parse_string("""
+			style "mystyle"
+				{
+					font_name = "Sans-Serif 30"
+				}
+			class 'GtkEntry' style 'mystyle' 
+		""")
                 
         self.widget = self.window.get_child()
         
@@ -108,29 +115,34 @@ class Numbers:
             num2 = int(self.lbNum2.get_label())
             sign = self.lbSign.get_label()
             res = 0.0
-            txRes = int(self.txtRes.get_text())
             
-            if sign == '+':
-                res = num1 + num2
-                pointFactor = 1 + self.difScore
-            elif sign == '-':
-                res = num1 - num2
-                pointFactor = 1 + self.difScore
-            elif sign == '×':
-                res = num1 * num2
-                pointFactor = 2 + self.difScore
-            elif sign == '÷':
-                res = num1 / num2
-                pointFactor = 2 + self.difScore
-            
-            if(txRes == res):
-                self.sendMsg(True)
-                self.score  += pointFactor
-            else:
-                self.sendMsg(False, res)
+            try:
+                txRes = int(self.txtRes.get_text())
+                if sign == '+':
+                    res = num1 + num2
+                    pointFactor = 1 + self.difScore
+                elif sign == '-':
+                    res = num1 - num2
+                    pointFactor = 1 + self.difScore
+                elif sign == '×':
+                    res = num1 * num2
+                    pointFactor = 2 + self.difScore
+                elif sign == '÷':
+                    res = num1 / num2
+                    pointFactor = 2 + self.difScore
                 
-            self.rounds += 1
-            self.btnNext.grab_focus()
+                if(txRes == res):
+                    self.sendMsg(True)
+                    self.score  += pointFactor
+                else:
+                    self.sendMsg(False, res)
+                    
+                self.rounds += 1
+                self.btnNext.grab_focus()
+            except ValueError:
+                self.lbMsg.set_label(self.pangoMark('purple', 'white', _('Insert numbers, not letters')))
+                self.txtRes.set_text('')
+                self.txtRes.grab_focus()
     
     def numbers_oper(self, widget = gtk.Widget):
         self.imgCheck.clear()
@@ -172,7 +184,8 @@ class Numbers:
             self.txtRes.set_text('')
             self.hasOp = False
         else:
-            self.lbMsg.set_label('<span foreground = "white" background = "#095DF0" size = "x-large">  %s  </span>' % (_('Type the result, then press calculate')))
+            #self.lbMsg.set_label('<span foreground = "white" background = "#095DF0" size = "x-large">  %s  </span>' % (_('Type the result, then press calculate')))
+            self.lbMsg.set_label(self.pangoMark('#095DF0', 'white', _('Type the result, then press calculate')))
         self.txtRes.grab_focus()
         timeout_add(self.timeout,self.setProgress)
         
@@ -185,15 +198,16 @@ class Numbers:
         if actionN == 'easy':            
             self.timeout  = 100
             self.difScore = 1
-            self.difText  = _('Easy')   
+            self.difText  = unicode(_('Easy'))
         elif actionN == 'medium':
             self.timeout  = 50
             self.difScore = 2
-            self.difText  = _('Medium')
+            self.difText  = unicode(_('Medium'))
+            print _('Medium')
         elif actionN == 'hard':
             self.timeout  = 25
             self.difScore = 3
-            self.difText  = _('Hard')
+            self.difText  = unicode(_('Hard'))
             
         self.gameView.show()
         self.menuView.hide()
@@ -237,7 +251,7 @@ class Numbers:
             
     def sendMsg(self, isRight, res = 0):
         if isRight:
-            self.lbMsg.set_label('<span foreground = "white" background = "#4DC406" size = "x-large">  %s  </span>' % (_('Great!')))
+            self.lbMsg.set_label(self.pangoMark('#4DC406', 'white',_('Great!')))
             self.imgCheck.set_from_file('icons/face-laugh.png')
         else:
             if(self.lifes < 0):
@@ -283,13 +297,12 @@ class Numbers:
         
 
     def forceLocales(self):
-        #This nasty function is needed due to lack of doc of how-to localize a GtkBuilder activity
-        lbTitle = self.builder.get_object('lbTitle')
-        lbSubt  = self.builder.get_object('lbSubt')
-        btnEasy = self.builder.get_object('btnEasy')
-        btnEasy = self.builder.get_object('btnEasy')
-        btnHard = self.builder.get_object('btnHard')
-        btnMed  = self.builder.get_object('btnMed')
+        #This nasty function is needed due to lack of doc how-to localize a GtkBuilder activity
+        btnScore     = self.builder.get_object('btnScore')
+        btnScoreOk   = self.builder.get_object('btnScoreOk')
+        btnScMainOk  = self.builder.get_object('btnScMainOk')
+        lbScore      = self.builder.get_object('lbScore')
+        lbPlayer     = self.builder.get_object('lbPlayer')
          
         self.lbTitle.set_label(_('New Game'))
         self.pangoLabel(self.lbTitle,(0,0,0),3)
@@ -300,14 +313,24 @@ class Numbers:
         self.btnHard.set_label(_('_Hard'))
         self.btnNext.set_label(_('_Next'))
         self.btnCalc.set_label(_('_Calculate'))
+        btnScore.set_label(_('_Score'))
+        btnScMainOk.set_label(_('Ok'))
+        btnScoreOk.set_label(_('_Ok'))
+        lbScore.set_label(_('Score'))
+        self.pangoLabel(lbScore,(0,0,0),3)
+        lbPlayer.set_label(_('Write Your Name'))
+        self.pangoLabel(lbPlayer,(0,0,0),3)
         
     def pangoLabel(self, label, fg, scale):
         atr = pango.AttrList()
-        foreg = pango.AttrForeground(fg[0], fg[1], fg[2],0, 100) #153, 38, 244 RGB
+        foreg = pango.AttrForeground(fg[0], fg[1], fg[2],0, 100)
         scale = pango.AttrScale(scale, 0, 100)
         atr.insert(foreg)
         atr.insert(scale)
         label.set_attributes(atr)
+        
+    def pangoMark(self, bg, fg, content):
+        return '<span foreground = "%s" background = "%s" size = "x-large">  %s  </span>' % (fg, bg, content)
         
     def rgbToPango(self, r, g, b):
         r = (r * 65535)/255
@@ -317,7 +340,7 @@ class Numbers:
         return (r,g,b)
         
     def fillScore(self):
-        self.dataCursor.execute('SELECT * FROM mathMe')
+        self.dataCursor.execute('SELECT * FROM mathMe ORDER BY score COLLATE NOCASE DESC')
         self.modelScore.clear()
         for row in self.dataCursor:
             self.modelScore.append(row)
