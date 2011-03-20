@@ -143,9 +143,10 @@ class Numbers:
                 self.rounds += 1
                 self.btnNext.grab_focus()
             except ValueError:
-                self.lbMsg.set_label(self.pangoMark('purple', 'white', _('Insert numbers, not letters')))
-                self.txtRes.set_text('')
-                self.txtRes.grab_focus()
+                if self.txtRes.get_text() != '':
+                    self.lbMsg.set_label(self.pangoMark('purple', 'white', _('Insert numbers, not letters')))
+                    self.txtRes.set_text('')
+                    self.txtRes.grab_focus()
     
     def numbers_oper(self, widget = gtk.Widget):
         self.imgCheck.clear()
@@ -156,8 +157,10 @@ class Numbers:
         sign = ''
         
         if self.lifes < 0 and self.hasOp:
-            self.showScore(self.gameView, True)
             widget = self.txtPlayer
+            widget.grab_focus()
+            self.showScore(self.gameView, True)
+            self.gameView.set_sensitive(False)
         else:
             widget = self.txtRes
         
@@ -215,6 +218,7 @@ class Numbers:
             self.difText  = unicode(_('Hard'))
             
         self.gameView.show()
+        self.gameView.set_sensitive(True)
         self.menuView.hide()
         self.numbers_oper()
         
@@ -241,6 +245,7 @@ class Numbers:
         if internal:
             self.scoreMain.hide()
             self.nameView.show()
+            self.txtPlayer.grab_focus()
             self.okAlert(_('Game Over'),'', self.numbers_savePlayer)
         else:
             self.fillScore()
