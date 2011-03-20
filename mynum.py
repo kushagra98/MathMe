@@ -23,6 +23,8 @@ import sqlite3
 from random import randint, randrange
 from gettext import gettext as _
 from os import path
+from sugar.graphics.alert import Alert
+from sugar.graphics.icon import Icon
 
 class Numbers:
     timeout  = 0
@@ -34,6 +36,7 @@ class Numbers:
     score    = 0
     rounds   = 0
     player   = ''
+    alert    = Alert()
     
     def __init__(self, runAsLib = True):
         self.builder = gtk.Builder() 
@@ -64,16 +67,15 @@ class Numbers:
         self.btnNext = self.builder.get_object('btnNext')
         self.lifeBox = self.builder.get_object('lifeBox')
         self.modelScore = listView(self.scoreList)
+        self.widget = self.window.get_child()
         
         gtk.rc_parse_string("""
 			style "mystyle"
 				{
-					font_name = "Sans-Serif 30"
+					font_name = "sans 30"
 				}
 			class 'GtkEntry' style 'mystyle' 
 		""")
-                
-        self.widget = self.window.get_child()
         
         self.lbLife = [gtk.Label(), gtk.Label(), gtk.Label(), gtk.Label()]
         i = 0
@@ -91,6 +93,7 @@ class Numbers:
         self.forceLocales()
         
         self.builder.connect_signals(self)
+        self.alert.hide()
         
         if not runAsLib:
             self.window.show_all()
@@ -154,6 +157,9 @@ class Numbers:
         
         if self.lifes < 0 and self.hasOp:
             self.showScore(self.gameView, True)
+            widget = self.txtPlayer
+        else:
+            widget = self.txtRes
         
         while newSign == self.oldSign:
             newSign = randrange(1,4)
@@ -184,9 +190,8 @@ class Numbers:
             self.txtRes.set_text('')
             self.hasOp = False
         else:
-            #self.lbMsg.set_label('<span foreground = "white" background = "#095DF0" size = "x-large">  %s  </span>' % (_('Type the result, then press calculate')))
             self.lbMsg.set_label(self.pangoMark('#095DF0', 'white', _('Type the result, then press calculate')))
-        self.txtRes.grab_focus()
+        widget.grab_focus()
         timeout_add(self.timeout,self.setProgress)
         
     def numbers_txtActivate(self, widget):
@@ -213,18 +218,21 @@ class Numbers:
         self.menuView.hide()
         self.numbers_oper()
         
-    def numbers_savePlayer(self, widget):
+    def numbers_savePlayer(self, widget, respid = 0):
+        self.myAct.remove_alert(self.alert)
         self.scoreMain.show()
-        self.player = self.txtPlayer.get_text()
+        self.player = unicode(self.txtPlayer.get_text())
         #Saving Data
         self.dataCursor.execute('INSERT INTO mathMe (player, score, rounds, difficulty) VALUES (?, ?, ?, ?)',(self.player, self.score, self.rounds, self.difText))
         self.dataCon.commit()
         #Filling listView
         self.fillScore()
                     
+        self.okAlert(_('To start a New Game press Ok'),'', self.numbers_setScore)
         self.nameView.hide()
     
-    def numbers_setScore(self, widget):
+    def numbers_setScore(self, widget, respid = 0):
+        self.myAct.remove_alert(self.alert)
         self.initLifes()
         
     def showScore(self, widget, internal = False):
@@ -233,19 +241,20 @@ class Numbers:
         if internal:
             self.scoreMain.hide()
             self.nameView.show()
+            self.okAlert(_('Game Over'),'', self.numbers_savePlayer)
         else:
             self.fillScore()
             self.scoreMain.show()
             self.nameView.hide()
-        self.txtPlayer.grab_focus()
-                
+            self.okAlert(_('To go back press Ok'),'', self.numbers_setScore)
+                            
     def numbers_actEnd(self, widget):
         self.dataCon.commit()
         self.dataCursor.close()
         self.dataCon.close()
             
     def markMe(self, widget,data = 0):
-        widgetLabel = widget.get_child() #153, 38, 244 RGB
+        widgetLabel = widget.get_child()
         foreg = self.rgbToPango(153, 38, 244)
         self.pangoLabel(widgetLabel, foreg, 1.5)
             
@@ -285,7 +294,7 @@ class Numbers:
         while i < 3:
             self.lbLife[i].set_label('☺')
             i += 1
-            
+        
         self.gameView.hide()
         self.scoreView.hide()
         self.menuView.show()
@@ -344,7 +353,21 @@ class Numbers:
         self.modelScore.clear()
         for row in self.dataCursor:
             self.modelScore.append(row)
-    
+            
+    def okAlert(self, title, msg, callback):        
+        self.alert = Alert()
+        icon = Icon(icon_name='dialog-ok')
+        self.alert.add_button(gtk.RESPONSE_OK, _('_Ok'), icon)
+        
+        self.alert.props.title = title
+        self.alert.props.msg = msg
+        
+        self.alert.connect('response', callback)
+        self.myAct.add_alert(self.alert)
+        
+    def setActivity(self, act):
+        self.myAct = act
+        
 class listView:
     def __init__(self, widget):
         self.listStore = gtk.ListStore(str, str, str, str)

@@ -47,8 +47,6 @@ class MathMe(activity.Activity):
         activity.Activity.__init__(self, handle)
         self._name = handle
 
-        self._main_view = gtk.VBox()
-
         self.num = mynum.Numbers()
         
         if NEW_TOOLBARS:
@@ -76,10 +74,10 @@ class MathMe(activity.Activity):
         if self.num.widget.parent:
             self.num.widget.parent.remove(self.num.widget)
             
-        self._main_view.pack_start(self.num.widget)
         
         self.num.widget.show()
-        self._main_view.show()
-        self.set_canvas(self._main_view)
+        self.set_canvas(self.num.widget)
         self.show_all()
+        self.num.setActivity(self)
+        
         
