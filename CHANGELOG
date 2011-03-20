@@ -9,3 +9,8 @@
  ·genlocales.sh now divided in functions and accepting arguments
   for each action
   
+20.03.2011
+ ·Improved sugar integration
+ ·Fixed focus issue on player name entry
+ ·Tested 0.9.1 working
+ 
