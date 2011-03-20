@@ -214,6 +214,7 @@
                 <child>
                   <object class="GtkEntry" id="txtRes">
                     <property name="visible">True</property>
+                    <property name="can_focus">True</property>
                     <property name="max_length">3</property>
                     <property name="invisible_char">•</property>
                     <property name="activates_default">True</property>
@@ -339,7 +340,6 @@
                 <child>
                   <object class="GtkButton" id="btnScMainOk">
                     <property name="label" translatable="yes">Ok</property>
-                    <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="can_default">True</property>
                     <property name="receives_default">False</property>
@@ -373,6 +373,7 @@
                 <child>
                   <object class="GtkEntry" id="txtPlayer">
                     <property name="visible">True</property>
+                    <property name="can_focus">True</property>
                     <property name="invisible_char">•</property>
                   </object>
                   <packing>
@@ -384,7 +385,6 @@
                 <child>
                   <object class="GtkButton" id="btnScoreOk">
                     <property name="label" translatable="yes">_Ok</property>
-                    <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
                     <property name="border_width">9</property>
