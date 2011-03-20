@@ -55,7 +55,7 @@ msgstr "Nuevo Juego"
 
 #: mynum.py:310
 msgid "Choose difficulty"
-msgstr "Elije la dificultad"
+msgstr "Elige la dificultad"
 
 #: mynum.py:312
 msgid "_Easy"
