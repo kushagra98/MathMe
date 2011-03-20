@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-19 17:47-0600\n"
+"POT-Creation-Date: 2011-03-20 04:58-0600\n"
 "PO-Revision-Date: 2011-03-14 05:30-0600\n"
 "Last-Translator: Hiram Jeronimo Perez <worg@linuxmail.org>\n"
 "Language-Team: Spanish\n"
@@ -17,94 +17,102 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: mynum.py:143
+#: mynum.py:146
 msgid "Insert numbers, not letters"
 msgstr "Escribe números, no letras"
 
-#: mynum.py:188
+#: mynum.py:193
 msgid "Type the result, then press calculate"
 msgstr "Escribe el resultado y presiona calcular"
 
-#: mynum.py:201
+#: mynum.py:206
 msgid "Easy"
 msgstr "Fácil"
 
-#: mynum.py:205 mynum.py:206
+#: mynum.py:210 mynum.py:211
 msgid "Medium"
 msgstr "Medio"
 
-#: mynum.py:210
+#: mynum.py:215
 msgid "Hard"
 msgstr "Difícil"
 
-#: mynum.py:255
-msgid "Great!"
-msgstr "¡Muy Bien!"
+#: mynum.py:231
+msgid "To start a New Game press Ok"
+msgstr "Para iniciar un Nuevo Juego presiona Aceptar"
 
-#: mynum.py:259 mynum.py:261
-msgid "The result is:"
-msgstr "El resultado es:"
-
-#: mynum.py:259
+#: mynum.py:244 mynum.py:267
 msgid "Game Over"
 msgstr "Fin del juego"
 
-#: mynum.py:308
+#: mynum.py:249
+msgid "To go back press Ok"
+msgstr "Para volver presiona Aceptar"
+
+#: mynum.py:263
+msgid "Great!"
+msgstr "¡Muy Bien!"
+
+#: mynum.py:267 mynum.py:269
+msgid "The result is:"
+msgstr "El resultado es:"
+
+#: mynum.py:316
 msgid "New Game"
 msgstr "Nuevo Juego"
 
-#: mynum.py:310
+#: mynum.py:318
 msgid "Choose difficulty"
 msgstr "Elige la dificultad"
 
-#: mynum.py:312
+#: mynum.py:320
 msgid "_Easy"
 msgstr "_Fácil"
 
-#: mynum.py:313
+#: mynum.py:321
 msgid "_Medium"
 msgstr "_Medio"
 
-#: mynum.py:314
+#: mynum.py:322
 msgid "_Hard"
 msgstr "_Difícil"
 
-#: mynum.py:315
+#: mynum.py:323
 msgid "_Next"
 msgstr "_Siguiente"
 
-#: mynum.py:316
+#: mynum.py:324
 msgid "_Calculate"
 msgstr "_Calcular"
 
-#: mynum.py:317
+#: mynum.py:325
 msgid "_Score"
 msgstr "_Puntuación"
 
-#: mynum.py:318
+#: mynum.py:326
 msgid "Ok"
 msgstr "A_ceptar"
 
-#: mynum.py:319
+#: mynum.py:327 mynum.py:360
 msgid "_Ok"
 msgstr "_Aceptar"
 
-#: mynum.py:320 mynum.py:354
+#: mynum.py:328 mynum.py:376
 msgid "Score"
 msgstr "Puntuación"
 
-#: mynum.py:322
+#: mynum.py:330
 msgid "Write Your Name"
 msgstr "Escribe tu nombre"
 
-#: mynum.py:354
+#: mynum.py:376
 msgid "Player Name"
 msgstr "Jugador"
 
-#: mynum.py:354
+#: mynum.py:376
 msgid "Rounds"
 msgstr "Operaciones hechas"
 
-#: mynum.py:354
+#: mynum.py:376
 msgid "Difficutly"
 msgstr "Dificultad"

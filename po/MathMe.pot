@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-19 17:47-0600\n"
+"POT-Creation-Date: 2011-03-20 04:58-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,94 +17,102 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: mynum.py:143
+#: mynum.py:146
 msgid "Insert numbers, not letters"
 msgstr ""
 
-#: mynum.py:188
+#: mynum.py:193
 msgid "Type the result, then press calculate"
 msgstr ""
 
-#: mynum.py:201
+#: mynum.py:206
 msgid "Easy"
 msgstr ""
 
-#: mynum.py:205 mynum.py:206
+#: mynum.py:210 mynum.py:211
 msgid "Medium"
 msgstr ""
 
-#: mynum.py:210
+#: mynum.py:215
 msgid "Hard"
 msgstr ""
 
-#: mynum.py:255
-msgid "Great!"
+#: mynum.py:231
+msgid "To start a New Game press Ok"
 msgstr ""
 
-#: mynum.py:259 mynum.py:261
-msgid "The result is:"
-msgstr ""
-
-#: mynum.py:259
+#: mynum.py:244 mynum.py:267
 msgid "Game Over"
 msgstr ""
 
-#: mynum.py:308
-msgid "New Game"
+#: mynum.py:249
+msgid "To go back press Ok"
 msgstr ""
 
-#: mynum.py:310
-msgid "Choose difficulty"
+#: mynum.py:263
+msgid "Great!"
 msgstr ""
 
-#: mynum.py:312
-msgid "_Easy"
-msgstr ""
-
-#: mynum.py:313
-msgid "_Medium"
-msgstr ""
-
-#: mynum.py:314
-msgid "_Hard"
-msgstr ""
-
-#: mynum.py:315
-msgid "_Next"
+#: mynum.py:267 mynum.py:269
+msgid "The result is:"
 msgstr ""
 
 #: mynum.py:316
-msgid "_Calculate"
-msgstr ""
-
-#: mynum.py:317
-msgid "_Score"
+msgid "New Game"
 msgstr ""
 
 #: mynum.py:318
-msgid "Ok"
+msgid "Choose difficulty"
 msgstr ""
 
-#: mynum.py:319
-msgid "_Ok"
+#: mynum.py:320
+msgid "_Easy"
 msgstr ""
 
-#: mynum.py:320 mynum.py:354
-msgid "Score"
+#: mynum.py:321
+msgid "_Medium"
 msgstr ""
 
 #: mynum.py:322
+msgid "_Hard"
+msgstr ""
+
+#: mynum.py:323
+msgid "_Next"
+msgstr ""
+
+#: mynum.py:324
+msgid "_Calculate"
+msgstr ""
+
+#: mynum.py:325
+msgid "_Score"
+msgstr ""
+
+#: mynum.py:326
+msgid "Ok"
+msgstr ""
+
+#: mynum.py:327 mynum.py:360
+msgid "_Ok"
+msgstr ""
+
+#: mynum.py:328 mynum.py:376
+msgid "Score"
+msgstr ""
+
+#: mynum.py:330
 msgid "Write Your Name"
 msgstr ""
 
-#: mynum.py:354
+#: mynum.py:376
 msgid "Player Name"
 msgstr ""
 
-#: mynum.py:354
+#: mynum.py:376
 msgid "Rounds"
 msgstr ""
 
-#: mynum.py:354
+#: mynum.py:376
 msgid "Difficutly"
 msgstr ""
